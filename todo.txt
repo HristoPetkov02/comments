@@ -1,0 +1,4 @@
+GROUP ID ✔️
+mvn -U clean install 
+
+integration testing - библиотека да избера и да направя някакъв тест
