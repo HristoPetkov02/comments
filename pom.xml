@@ -39,6 +39,7 @@
 		<lombok.version>1.18.34</lombok.version>
 		<springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
 		<postgresql.version>42.7.3</postgresql.version>
+		<json-patch.version>1.13</json-patch.version>
 	</properties>
 
 	<modules>
