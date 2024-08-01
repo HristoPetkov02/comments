@@ -1,17 +1,21 @@
 package com.tinqinacademy.comments.rest.controllers;
 
+import com.tinqinacademy.comments.api.models.ErrorWrapper;
 import com.tinqinacademy.comments.api.operations.getcomments.GetRoomCommentsInput;
 import com.tinqinacademy.comments.api.operations.getcomments.GetRoomCommentsOutput;
 import com.tinqinacademy.comments.api.operations.leavecomment.LeaveCommentInput;
 import com.tinqinacademy.comments.api.operations.leavecomment.LeaveCommentOutput;
 import com.tinqinacademy.comments.api.operations.updateowncomment.UpdateOwnCommentInput;
 import com.tinqinacademy.comments.api.operations.updateowncomment.UpdateOwnCommentOutput;
-import com.tinqinacademy.comments.api.interfaces.HotelService;
 import com.tinqinacademy.comments.api.restroute.RestApiRoutes;
+import com.tinqinacademy.comments.core.processors.GetRoomCommentsOperationProcessor;
+import com.tinqinacademy.comments.core.processors.LeaveCommentOperationProcessor;
+import com.tinqinacademy.comments.core.processors.UpdateOwnCommentProcessor;
+import com.tinqinacademy.comments.rest.base.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
+import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +23,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-public class HotelController {
-    private final HotelService hotelService;
+public class HotelController extends BaseController {
+    private final LeaveCommentOperationProcessor leaveCommentOperationProcessor;
+    private final GetRoomCommentsOperationProcessor getRoomCommentsOperationProcessor;
+    private final UpdateOwnCommentProcessor updateOwnCommentProcessor;
 
     @Operation(summary = "Get all comments", description = " gets all comments of a room")
     @ApiResponses(value = {
@@ -33,8 +39,8 @@ public class HotelController {
         GetRoomCommentsInput input = GetRoomCommentsInput.builder()
                 .roomId(roomId)
                 .build();
-        GetRoomCommentsOutput output = hotelService.getRoomComments(input);
-        return new ResponseEntity<>(output, HttpStatus.OK);
+        Either<ErrorWrapper,GetRoomCommentsOutput> result = getRoomCommentsOperationProcessor.process(input);
+        return handle(result);
     }
 
     @Operation(summary = "Leave a comment", description = " leaves a comment for a room")
@@ -46,12 +52,13 @@ public class HotelController {
     @PostMapping(RestApiRoutes.API_HOTEL_LEAVE_COMMENT)
     public ResponseEntity<?> leaveComment(
             @PathVariable String roomId,
-            @Valid @RequestBody LeaveCommentInput input) {
+            @RequestBody LeaveCommentInput input) {
         LeaveCommentInput updatedInput = input.toBuilder()
                 .roomId(roomId)
                 .build();
-        LeaveCommentOutput output = hotelService.leaveComment(updatedInput);
-        return new ResponseEntity<>(output, HttpStatus.CREATED);
+        Either<ErrorWrapper, LeaveCommentOutput> result = leaveCommentOperationProcessor.process(updatedInput);
+
+        return handleWithCode(result, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update own comment", description = " updates your own comment")
@@ -63,12 +70,12 @@ public class HotelController {
     @PatchMapping(RestApiRoutes.API_HOTEL_UPDATE_OWN_COMMENT)
     public ResponseEntity<?> updateOwnComment(
             @PathVariable String commentId,
-            @Valid @RequestBody UpdateOwnCommentInput input) {
+            @RequestBody UpdateOwnCommentInput input) {
         UpdateOwnCommentInput updatedInput = input.toBuilder()
                 .commentId(commentId)
                 .build();
-        UpdateOwnCommentOutput output = hotelService.updateOwnComment(updatedInput);
-        return new ResponseEntity<>(output, HttpStatus.CREATED);
+        Either<ErrorWrapper, UpdateOwnCommentOutput> result = updateOwnCommentProcessor.process(updatedInput);
+        return handle(result);
     }
 
 }

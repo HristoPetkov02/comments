@@ -24,17 +24,17 @@ public class Comment {
     private String content;
 
     @CreationTimestamp
-    @Column(name = "published_on", updatable = false)
-    private LocalDateTime publishedOn;
+    @Column(name = "publish_date", updatable = false)
+    private LocalDateTime publishDate;
 
     @UpdateTimestamp
-    @Column(name = "last_edited_on")
-    private LocalDateTime lastEditedOn;
+    @Column(name = "last_edited_date")
+    private LocalDateTime lastEditedDate;
 
     @Column(name = "room_id",nullable = false)
     private UUID roomId;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, unique = true)
     private UUID userId;
 
     @Column(name = "last_edited_by", nullable = false)

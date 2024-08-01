@@ -15,9 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.tinqinacademy.comments.rest.base.BaseController;
+
 @RequiredArgsConstructor
 @RestController
-public class SystemController {
+public class SystemController extends BaseController{
     private final SystemService systemService;
 
     @Operation(summary = "Update comment", description = " updates a comment")
