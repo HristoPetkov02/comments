@@ -48,7 +48,7 @@ public class SystemController {
     @DeleteMapping(RestApiRoutes.API_SYSTEM_DELETE_COMMENT)
     public ResponseEntity<?> deleteComment(@PathVariable String commentId){
         DeleteCommentInput input = DeleteCommentInput.builder()
-                .commentID(commentId)
+                .commentId(commentId)
                 .build();
 
         DeleteCommentOutput output = systemService.deleteComment(input);

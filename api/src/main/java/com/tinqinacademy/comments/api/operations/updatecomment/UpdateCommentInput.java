@@ -1,6 +1,7 @@
 package com.tinqinacademy.comments.api.operations.updatecomment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tinqinacademy.comments.api.base.OperationInput;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Builder(toBuilder = true)
-public class UpdateCommentInput {
+public class UpdateCommentInput implements OperationInput {
     //входни данни за обновяване на коментар от админ
     @JsonIgnore
     private String commentId;
