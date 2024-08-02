@@ -43,7 +43,11 @@ public class DeleteCommentOperationProcessor extends BaseOperationProcessor<Dele
     private DeleteCommentOutput deleteComment(DeleteCommentInput input) {
         logStart(input);
 
+        validateInput(input);
+
         checkIfCommentExist(input);
+
+        commentRepository.deleteById(UUID.fromString(input.getCommentId()));
 
         DeleteCommentOutput output = DeleteCommentOutput.builder().build();
         logEnd(output);

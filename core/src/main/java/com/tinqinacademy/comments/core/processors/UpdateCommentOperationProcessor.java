@@ -11,6 +11,7 @@ import com.tinqinacademy.comments.core.exceptions.CommentsApiException;
 import com.tinqinacademy.comments.persistence.models.Comment;
 import com.tinqinacademy.comments.persistence.repository.CommentRepository;
 import io.vavr.control.Either;
+import io.vavr.control.Try;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
@@ -29,7 +30,9 @@ public class UpdateCommentOperationProcessor extends BaseOperationProcessor<Upda
 
     @Override
     public Either<ErrorWrapper, UpdateCommentOutput> process(UpdateCommentInput input) {
-        return null;
+        return Try.of(() -> updateComment(input))
+                .toEither()
+                .mapLeft(errorHandlerService::handle);
     }
 
     private Comment getCurrentComment(UpdateCommentInput input){

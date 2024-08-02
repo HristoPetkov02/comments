@@ -3,6 +3,7 @@ package com.tinqinacademy.comments.core.errorhandler;
 import com.tinqinacademy.comments.api.interfaces.ErrorHandlerService;
 import com.tinqinacademy.comments.api.models.ErrorWrapper;
 import com.tinqinacademy.comments.core.exceptions.CommentsApiException;
+import com.tinqinacademy.comments.core.exceptions.GeneralValidationException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService {
     public ErrorWrapper handle(Throwable throwable) {
         return Match(throwable).of(
                 Case($(instanceOf(CommentsApiException.class)), this::handleCommentsApiException),
-                Case($(instanceOf(ConstraintViolationException.class)), this::handleConstraintViolationException),
+                Case($(instanceOf(GeneralValidationException.class)), this::handleGenericValidationException),
                 Case($(), this::handleDefaultException)
         );
     }
@@ -36,21 +37,13 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService {
                 .build();
     }
 
-    private ErrorWrapper handleConstraintViolationException(ConstraintViolationException ex) {
-        List<Error> errors = ex.getConstraintViolations()
-                .stream()
-                .map(violation -> Error.builder()
-                        .field(violation.getPropertyPath().toString())
-                        .message(violation.getMessage())
-                        .build())
-                .collect(Collectors.toList());
-
-
+    private ErrorWrapper handleGenericValidationException(GeneralValidationException ex) {
         return ErrorWrapper.builder()
-                .errorCode(HttpStatus.BAD_REQUEST)
-                .errors(errors)
+                .errorCode(ex.getStatus())
+                .errors(ex.getErrors())
                 .build();
     }
+
 
     private ErrorWrapper handleDefaultException(Throwable ex) {
         return ErrorWrapper.builder()

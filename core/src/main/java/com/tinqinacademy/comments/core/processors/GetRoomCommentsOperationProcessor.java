@@ -60,6 +60,8 @@ public class GetRoomCommentsOperationProcessor extends BaseOperationProcessor<Ge
     private GetRoomCommentsOutput getRoomComments(GetRoomCommentsInput input) {
         logStart(input);
 
+        validateInput(input);
+
         List<Comment> comments = getComments(input.getRoomId());
 
 

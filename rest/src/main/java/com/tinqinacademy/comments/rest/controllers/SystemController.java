@@ -38,8 +38,7 @@ public class SystemController extends BaseController{
                 .commentId(commentId)
                 .build();
 
-        Either<ErrorWrapper, UpdateCommentOutput> result = updateCommentOperationProcessor.process(updatedInput);
-        return handle(result);
+        return handle(updateCommentOperationProcessor.process(updatedInput));
     }
 
 
@@ -55,7 +54,6 @@ public class SystemController extends BaseController{
                 .commentId(commentId)
                 .build();
 
-        Either<ErrorWrapper, DeleteCommentOutput> result = deleteCommentOperationProcessor.process(input);
-        return handle(result);
+        return handle(deleteCommentOperationProcessor.process(input));
     }
 }
