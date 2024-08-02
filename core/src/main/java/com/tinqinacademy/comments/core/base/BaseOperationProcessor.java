@@ -26,7 +26,6 @@ public abstract class BaseOperationProcessor<I extends OperationInput, O extends
     protected final ObjectMapper mapper;
     protected final ErrorHandlerService errorHandlerService;
     protected final Validator validator;
-    protected final CommentRepository commentRepository;
 
     protected void validateInput(I input){
         Set<ConstraintViolation<I>> violations = validator.validate(input);
