@@ -7,7 +7,7 @@ import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentInpu
 import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentOperation;
 import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentOutput;
 import com.tinqinacademy.comments.core.base.BaseOperationProcessor;
-import com.tinqinacademy.comments.core.exceptions.CommentsApiException;
+import com.tinqinacademy.comments.core.exceptions.GeneralApiException;
 import com.tinqinacademy.comments.persistence.repository.CommentRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
@@ -22,9 +22,13 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class DeleteCommentOperationProcessor extends BaseOperationProcessor<DeleteCommentInput, DeleteCommentOutput> implements DeleteCommentOperation {
+    private final CommentRepository commentRepository;
+
     public DeleteCommentOperationProcessor(ConversionService conversionService, ObjectMapper mapper, ErrorHandlerService errorHandlerService, Validator validator, CommentRepository commentRepository) {
-        super(conversionService, mapper, errorHandlerService, validator, commentRepository);
+        super(conversionService, mapper, errorHandlerService, validator);
+        this.commentRepository = commentRepository;
     }
+
 
     @Override
     public Either<ErrorWrapper, DeleteCommentOutput> process(DeleteCommentInput input) {
@@ -35,7 +39,7 @@ public class DeleteCommentOperationProcessor extends BaseOperationProcessor<Dele
 
     private void checkIfCommentExist(DeleteCommentInput input){
         commentRepository.findById(UUID.fromString(input.getCommentId()))
-                .orElseThrow(() -> new CommentsApiException(
+                .orElseThrow(() -> new GeneralApiException(
                         String.format("Comment with %s id doesn't exist",input.getCommentId()),
                         HttpStatus.NOT_FOUND));
     }

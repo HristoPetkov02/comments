@@ -7,7 +7,7 @@ import com.tinqinacademy.comments.api.operations.leavecomment.LeaveCommentInput;
 import com.tinqinacademy.comments.api.operations.leavecomment.LeaveCommentOperation;
 import com.tinqinacademy.comments.api.operations.leavecomment.LeaveCommentOutput;
 import com.tinqinacademy.comments.core.base.BaseOperationProcessor;
-import com.tinqinacademy.comments.core.exceptions.CommentsApiException;
+import com.tinqinacademy.comments.core.exceptions.GeneralApiException;
 import com.tinqinacademy.comments.persistence.models.Comment;
 import com.tinqinacademy.comments.persistence.repository.CommentRepository;
 import io.vavr.control.Either;
@@ -18,16 +18,16 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Slf4j
 @Service
 public class LeaveCommentOperationProcessor extends BaseOperationProcessor<LeaveCommentInput, LeaveCommentOutput> implements LeaveCommentOperation {
-
+    private final CommentRepository commentRepository;
 
     public LeaveCommentOperationProcessor(ConversionService conversionService, ObjectMapper mapper, ErrorHandlerService errorHandlerService, Validator validator, CommentRepository commentRepository) {
-        super(conversionService, mapper, errorHandlerService, validator, commentRepository);
+        super(conversionService, mapper, errorHandlerService, validator);
+        this.commentRepository = commentRepository;
     }
+
 
     @Override
     public Either<ErrorWrapper, LeaveCommentOutput> process(LeaveCommentInput input) {
@@ -43,7 +43,7 @@ public class LeaveCommentOperationProcessor extends BaseOperationProcessor<Leave
 
         Comment comment = conversionService.convert(input, Comment.class);
         if (comment == null) {
-            throw new CommentsApiException(
+            throw new GeneralApiException(
                     "Error converting input to Comment",
                     HttpStatus.BAD_REQUEST);
         }

@@ -7,7 +7,7 @@ import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentInpu
 import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentOperation;
 import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentOutput;
 import com.tinqinacademy.comments.core.base.BaseOperationProcessor;
-import com.tinqinacademy.comments.core.exceptions.CommentsApiException;
+import com.tinqinacademy.comments.core.exceptions.GeneralApiException;
 import com.tinqinacademy.comments.persistence.models.Comment;
 import com.tinqinacademy.comments.persistence.repository.CommentRepository;
 import io.vavr.control.Either;
@@ -24,8 +24,11 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class UpdateCommentOperationProcessor extends BaseOperationProcessor<UpdateCommentInput, UpdateCommentOutput> implements UpdateCommentOperation {
+    private final CommentRepository commentRepository;
+
     public UpdateCommentOperationProcessor(ConversionService conversionService, ObjectMapper mapper, ErrorHandlerService errorHandlerService, Validator validator, CommentRepository commentRepository) {
-        super(conversionService, mapper, errorHandlerService, validator, commentRepository);
+        super(conversionService, mapper, errorHandlerService, validator);
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class UpdateCommentOperationProcessor extends BaseOperationProcessor<Upda
 
     private Comment getCurrentComment(UpdateCommentInput input){
         Comment currentComment = commentRepository.findById(UUID.fromString(input.getCommentId()))
-                .orElseThrow(() -> new CommentsApiException(
+                .orElseThrow(() -> new GeneralApiException(
                         String.format("Comment with %s id does not exist",input.getCommentId()),
                 HttpStatus.NOT_FOUND));
         return currentComment;
