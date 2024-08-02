@@ -1,24 +1,28 @@
 package com.tinqinacademy.comments.rest.controllers;
 
+import com.tinqinacademy.comments.api.models.ErrorWrapper;
 import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentInput;
 import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentOutput;
 import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentInput;
 import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentOutput;
-import com.tinqinacademy.comments.api.interfaces.SystemService;
 import com.tinqinacademy.comments.api.restroute.RestApiRoutes;
+import com.tinqinacademy.comments.core.processors.DeleteCommentOperationProcessor;
+import com.tinqinacademy.comments.core.processors.UpdateCommentOperationProcessor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
+import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.tinqinacademy.comments.rest.base.BaseController;
+
 @RequiredArgsConstructor
 @RestController
-public class SystemController {
-    private final SystemService systemService;
+public class SystemController extends BaseController{
+    private final DeleteCommentOperationProcessor deleteCommentOperationProcessor;
+    private final UpdateCommentOperationProcessor updateCommentOperationProcessor;
 
     @Operation(summary = "Update comment", description = " updates a comment")
     @ApiResponses(value = {
@@ -29,13 +33,12 @@ public class SystemController {
     @PutMapping(RestApiRoutes.API_SYSTEM_UPDATE_COMMENT)
     public ResponseEntity<?> updateComment(
             @PathVariable String commentId,
-            @Valid @RequestBody UpdateCommentInput input){
+            @RequestBody UpdateCommentInput input){
         UpdateCommentInput updatedInput = input.toBuilder()
                 .commentId(commentId)
                 .build();
 
-        UpdateCommentOutput output = systemService.updateComment(updatedInput);
-        return new ResponseEntity<>(output, HttpStatus.OK);
+        return handle(updateCommentOperationProcessor.process(updatedInput));
     }
 
 
@@ -48,10 +51,9 @@ public class SystemController {
     @DeleteMapping(RestApiRoutes.API_SYSTEM_DELETE_COMMENT)
     public ResponseEntity<?> deleteComment(@PathVariable String commentId){
         DeleteCommentInput input = DeleteCommentInput.builder()
-                .commentID(commentId)
+                .commentId(commentId)
                 .build();
 
-        DeleteCommentOutput output = systemService.deleteComment(input);
-        return new ResponseEntity<>(output, HttpStatus.OK);
+        return handle(deleteCommentOperationProcessor.process(input));
     }
 }
