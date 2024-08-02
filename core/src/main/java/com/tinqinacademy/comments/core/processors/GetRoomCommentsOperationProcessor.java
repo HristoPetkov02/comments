@@ -12,6 +12,7 @@ import com.tinqinacademy.comments.core.exceptions.CommentsApiException;
 import com.tinqinacademy.comments.persistence.models.Comment;
 import com.tinqinacademy.comments.persistence.repository.CommentRepository;
 import io.vavr.control.Either;
+import io.vavr.control.Try;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
@@ -35,7 +36,9 @@ public class GetRoomCommentsOperationProcessor extends BaseOperationProcessor<Ge
 
     @Override
     public Either<ErrorWrapper, GetRoomCommentsOutput> process(GetRoomCommentsInput input) {
-        return null;
+        return Try.of(() -> getRoomComments(input))
+                .toEither()
+                .mapLeft(errorHandlerService::handle);
     }
 
     private List<Comment> getComments(String id) {

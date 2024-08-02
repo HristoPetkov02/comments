@@ -50,9 +50,7 @@ public class LeaveCommentOperationProcessor extends BaseOperationProcessor<Leave
         commentRepository.save(comment);
 
 
-        LeaveCommentOutput output = LeaveCommentOutput.builder()
-                .id(UUID.randomUUID().toString())
-                .build();
+        LeaveCommentOutput output = conversionService.convert(comment, LeaveCommentOutput.class);
 
         logEnd(output);
         return output;

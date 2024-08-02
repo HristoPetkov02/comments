@@ -39,8 +39,7 @@ public class HotelController extends BaseController {
         GetRoomCommentsInput input = GetRoomCommentsInput.builder()
                 .roomId(roomId)
                 .build();
-        Either<ErrorWrapper,GetRoomCommentsOutput> result = getRoomCommentsOperationProcessor.process(input);
-        return handle(result);
+        return handle(getRoomCommentsOperationProcessor.process(input));
     }
 
     @Operation(summary = "Leave a comment", description = " leaves a comment for a room")
@@ -56,9 +55,8 @@ public class HotelController extends BaseController {
         LeaveCommentInput updatedInput = input.toBuilder()
                 .roomId(roomId)
                 .build();
-        Either<ErrorWrapper, LeaveCommentOutput> result = leaveCommentOperationProcessor.process(updatedInput);
 
-        return handleWithCode(result, HttpStatus.CREATED);
+        return handleWithCode(leaveCommentOperationProcessor.process(updatedInput), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update own comment", description = " updates your own comment")
@@ -74,8 +72,7 @@ public class HotelController extends BaseController {
         UpdateOwnCommentInput updatedInput = input.toBuilder()
                 .commentId(commentId)
                 .build();
-        Either<ErrorWrapper, UpdateOwnCommentOutput> result = updateOwnCommentProcessor.process(updatedInput);
-        return handle(result);
+        return handle(updateOwnCommentProcessor.process(updatedInput));
     }
 
 }
