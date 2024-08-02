@@ -2,14 +2,12 @@ package com.tinqinacademy.comments.core.errorhandler;
 
 import com.tinqinacademy.comments.api.interfaces.ErrorHandlerService;
 import com.tinqinacademy.comments.api.models.ErrorWrapper;
-import com.tinqinacademy.comments.core.exceptions.CommentsApiException;
+import com.tinqinacademy.comments.core.exceptions.GeneralApiException;
 import com.tinqinacademy.comments.core.exceptions.GeneralValidationException;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static io.vavr.API.*;
 import static io.vavr.Predicates.instanceOf;
@@ -20,13 +18,13 @@ public class ErrorHandlerServiceImpl implements ErrorHandlerService {
     @Override
     public ErrorWrapper handle(Throwable throwable) {
         return Match(throwable).of(
-                Case($(instanceOf(CommentsApiException.class)), this::handleCommentsApiException),
+                Case($(instanceOf(GeneralApiException.class)), this::handleGeneralApiException),
                 Case($(instanceOf(GeneralValidationException.class)), this::handleGenericValidationException),
                 Case($(), this::handleDefaultException)
         );
     }
 
-    private ErrorWrapper handleCommentsApiException(CommentsApiException ex) {
+    private ErrorWrapper handleGeneralApiException(GeneralApiException ex) {
         return ErrorWrapper.builder()
                 .errorCode(ex.getHttpStatus())
                 .errors(
