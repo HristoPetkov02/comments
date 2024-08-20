@@ -1,4 +1,4 @@
-package com.tinqinacademy.comments.api.operations.leavecomment;
+package com.tinqinacademy.comments.api.operations.hotel.leavecomment;
 
 import com.tinqinacademy.comments.api.base.OperationOutput;
 import lombok.*;
@@ -10,6 +10,5 @@ import lombok.*;
 @Builder
 @ToString
 public class LeaveCommentOutput implements OperationOutput {
-    //изходни данни от оставяне на коментар
     private String id;
 }

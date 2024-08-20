@@ -1,9 +1,10 @@
-package com.tinqinacademy.comments.api.operations.updatecomment;
+package com.tinqinacademy.comments.api.operations.system.updatecomment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tinqinacademy.comments.api.base.OperationInput;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.validator.constraints.UUID;
 
 @Getter
 @Setter
@@ -12,18 +13,16 @@ import lombok.*;
 @ToString
 @Builder(toBuilder = true)
 public class UpdateCommentInput implements OperationInput {
-    //входни данни за обновяване на коментар от админ
     @JsonIgnore
     private String commentId;
 
-    @NotBlank(message = "Room No is required")
-    private String roomNo;
+    @NotBlank(message = "Room id is required")
+    @UUID(message = "Room id must be a valid UUID")
+    private String roomId;
 
-    @NotBlank(message = "First name is required")
-    private String firstName;
-
-    @NotBlank(message = "Last name is required")
-    private String lastName;
+    @NotBlank(message = "User id is required")
+    @UUID(message = "User id must be a valid UUID")
+    private String userId;
 
     @NotBlank(message = "Comment content is required")
     private String content;

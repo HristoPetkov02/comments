@@ -1,21 +1,16 @@
 package com.tinqinacademy.comments.rest.controllers;
 
-import com.tinqinacademy.comments.api.models.ErrorWrapper;
-import com.tinqinacademy.comments.api.operations.getcomments.GetRoomCommentsInput;
-import com.tinqinacademy.comments.api.operations.getcomments.GetRoomCommentsOutput;
-import com.tinqinacademy.comments.api.operations.leavecomment.LeaveCommentInput;
-import com.tinqinacademy.comments.api.operations.leavecomment.LeaveCommentOutput;
-import com.tinqinacademy.comments.api.operations.updateowncomment.UpdateOwnCommentInput;
-import com.tinqinacademy.comments.api.operations.updateowncomment.UpdateOwnCommentOutput;
+import com.tinqinacademy.comments.api.operations.hotel.getcomments.GetRoomCommentsInput;
+import com.tinqinacademy.comments.api.operations.hotel.leavecomment.LeaveCommentInput;
+import com.tinqinacademy.comments.api.operations.hotel.updateowncomment.UpdateOwnCommentInput;
 import com.tinqinacademy.comments.api.restroute.RestApiRoutes;
-import com.tinqinacademy.comments.core.processors.GetRoomCommentsOperationProcessor;
-import com.tinqinacademy.comments.core.processors.LeaveCommentOperationProcessor;
-import com.tinqinacademy.comments.core.processors.UpdateOwnCommentProcessor;
+import com.tinqinacademy.comments.core.processors.hotel.GetRoomCommentsOperationProcessor;
+import com.tinqinacademy.comments.core.processors.hotel.LeaveCommentOperationProcessor;
+import com.tinqinacademy.comments.core.processors.hotel.UpdateOwnCommentProcessor;
 import com.tinqinacademy.comments.rest.base.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

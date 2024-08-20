@@ -1,11 +1,11 @@
-package com.tinqinacademy.comments.core.processors;
+package com.tinqinacademy.comments.core.processors.hotel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tinqinacademy.comments.api.interfaces.ErrorHandlerService;
 import com.tinqinacademy.comments.api.models.ErrorWrapper;
-import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentInput;
-import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentOperation;
-import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentOutput;
+import com.tinqinacademy.comments.api.operations.hotel.updateowncomment.UpdateOwnCommentInput;
+import com.tinqinacademy.comments.api.operations.hotel.updateowncomment.UpdateOwnCommentOperation;
+import com.tinqinacademy.comments.api.operations.hotel.updateowncomment.UpdateOwnCommentOutput;
 import com.tinqinacademy.comments.core.base.BaseOperationProcessor;
 import com.tinqinacademy.comments.core.exceptions.GeneralApiException;
 import com.tinqinacademy.comments.persistence.models.Comment;
@@ -18,48 +18,48 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
 @Service
-public class UpdateCommentOperationProcessor extends BaseOperationProcessor<UpdateCommentInput, UpdateCommentOutput> implements UpdateCommentOperation {
+public class UpdateOwnCommentProcessor extends BaseOperationProcessor<UpdateOwnCommentInput, UpdateOwnCommentOutput> implements UpdateOwnCommentOperation {
     private final CommentRepository commentRepository;
 
-    public UpdateCommentOperationProcessor(ConversionService conversionService, ObjectMapper mapper, ErrorHandlerService errorHandlerService, Validator validator, CommentRepository commentRepository) {
+    public UpdateOwnCommentProcessor(ConversionService conversionService, ObjectMapper mapper, ErrorHandlerService errorHandlerService, Validator validator, CommentRepository commentRepository) {
         super(conversionService, mapper, errorHandlerService, validator);
         this.commentRepository = commentRepository;
     }
 
     @Override
-    public Either<ErrorWrapper, UpdateCommentOutput> process(UpdateCommentInput input) {
-        return Try.of(() -> updateComment(input))
+    public Either<ErrorWrapper, UpdateOwnCommentOutput> process(UpdateOwnCommentInput input) {
+        return Try.of(() -> updateOwnComment(input))
                 .toEither()
                 .mapLeft(errorHandlerService::handle);
     }
 
-    private Comment getCurrentComment(UpdateCommentInput input){
+    private Comment getCurrentComment(UpdateOwnCommentInput input){
         Comment currentComment = commentRepository.findById(UUID.fromString(input.getCommentId()))
                 .orElseThrow(() -> new GeneralApiException(
-                        String.format("Comment with %s id does not exist",input.getCommentId()),
-                HttpStatus.NOT_FOUND));
+                        String.format("Comment with id %s not found", input.getCommentId()),
+                        HttpStatus.NOT_FOUND));
         return currentComment;
     }
 
-    private UpdateCommentOutput updateComment(UpdateCommentInput input) {
+    private UpdateOwnCommentOutput updateOwnComment(UpdateOwnCommentInput input) {
         logStart(input);
 
         validateInput(input);
 
         Comment currentComment = getCurrentComment(input);
-        Comment updatedComment = Objects.requireNonNull(conversionService.convert(input, Comment.CommentBuilder.class))
-                .userId(currentComment.getUserId())
-                .lastEditedBy(UUID.randomUUID())
+        Comment updatedComment = currentComment.toBuilder()
+                .lastEditedBy(currentComment.getId())
+                .content(input.getContent())
                 .build();
 
         commentRepository.save(updatedComment);
 
-        UpdateCommentOutput output = conversionService.convert(updatedComment,UpdateCommentOutput.class);
+
+        UpdateOwnCommentOutput output = conversionService.convert(updatedComment, UpdateOwnCommentOutput.class);
 
         logEnd(output);
         return output;

@@ -1,4 +1,4 @@
-package com.tinqinacademy.comments.api.operations.updateowncomment;
+package com.tinqinacademy.comments.api.operations.hotel.updateowncomment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tinqinacademy.comments.api.base.OperationInput;
@@ -12,7 +12,6 @@ import lombok.*;
 @ToString
 @Builder(toBuilder = true)
 public class UpdateOwnCommentInput implements OperationInput {
-    //входни данни за обновяване на собствен коментар
     @JsonIgnore
     private String commentId;
 

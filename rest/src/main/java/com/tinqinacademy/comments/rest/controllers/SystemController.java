@@ -1,17 +1,13 @@
 package com.tinqinacademy.comments.rest.controllers;
 
-import com.tinqinacademy.comments.api.models.ErrorWrapper;
-import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentInput;
-import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentOutput;
-import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentInput;
-import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentOutput;
+import com.tinqinacademy.comments.api.operations.system.deletecomment.DeleteCommentInput;
+import com.tinqinacademy.comments.api.operations.system.updatecomment.UpdateCommentInput;
 import com.tinqinacademy.comments.api.restroute.RestApiRoutes;
-import com.tinqinacademy.comments.core.processors.DeleteCommentOperationProcessor;
-import com.tinqinacademy.comments.core.processors.UpdateCommentOperationProcessor;
+import com.tinqinacademy.comments.core.processors.system.DeleteCommentOperationProcessor;
+import com.tinqinacademy.comments.core.processors.system.UpdateCommentOperationProcessor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

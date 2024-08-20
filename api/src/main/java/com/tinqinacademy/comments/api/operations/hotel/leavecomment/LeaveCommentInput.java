@@ -1,10 +1,11 @@
-package com.tinqinacademy.comments.api.operations.leavecomment;
+package com.tinqinacademy.comments.api.operations.hotel.leavecomment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tinqinacademy.comments.api.base.OperationInput;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.validator.constraints.UUID;
 
 @Getter
 @Setter
@@ -13,15 +14,13 @@ import lombok.*;
 @ToString
 @Builder(toBuilder = true)
 public class LeaveCommentInput implements OperationInput {
-    //входни данни за оставяне на коментар на стая
     @JsonIgnore
     private String roomId;
 
-    @NotBlank(message = "First name is required")
-    private String firstName;
+    @NotBlank(message = "User id is required")
+    @UUID(message = "User id must be a valid UUID")
+    private String userId;
 
-    @NotBlank(message = "Last name is required")
-    private String lastName;
 
     @NotBlank(message = "Comment content is required")
     private String content;

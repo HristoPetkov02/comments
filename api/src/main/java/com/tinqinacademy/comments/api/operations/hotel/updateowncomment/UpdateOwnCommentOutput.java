@@ -1,4 +1,4 @@
-package com.tinqinacademy.comments.api.operations.updateowncomment;
+package com.tinqinacademy.comments.api.operations.hotel.updateowncomment;
 
 import com.tinqinacademy.comments.api.base.OperationOutput;
 import lombok.*;
@@ -10,6 +10,5 @@ import lombok.*;
 @ToString
 @Builder
 public class UpdateOwnCommentOutput implements OperationOutput {
-    //изходни данни за обновяване на собствен коментар
     private String id;
 }

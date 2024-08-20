@@ -1,6 +1,6 @@
 package com.tinqinacademy.comments.core.converters;
 
-import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentInput;
+import com.tinqinacademy.comments.api.operations.system.updatecomment.UpdateCommentInput;
 import com.tinqinacademy.comments.core.base.BaseConverter;
 import com.tinqinacademy.comments.persistence.models.Comment;
 import org.springframework.stereotype.Component;
