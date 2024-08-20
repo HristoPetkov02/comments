@@ -18,7 +18,7 @@ public interface CommentsRestExport {
     //hotel controller
     @RequestLine("GET "+ RestApiRoutes.API_HOTEL_GET_ROOM_COMMENT)
     @Headers("Content-Type: application/json")
-    GetRoomCommentsOutput getRoomComment(@Param("roomId") String roomId);
+    GetRoomCommentsOutput getRoomComments(@Param("roomId") String roomId);
 
 
     @RequestLine("POST " + RestApiRoutes.API_HOTEL_LEAVE_COMMENT)

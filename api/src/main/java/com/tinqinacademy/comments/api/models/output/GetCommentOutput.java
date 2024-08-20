@@ -13,8 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class GetCommentOutput {
     private String id;
-    private String firstName;
-    private String lastName;
+    private String userId;
     private String content;
     private LocalDate publishDate;
     private LocalDate lastEditedDate;

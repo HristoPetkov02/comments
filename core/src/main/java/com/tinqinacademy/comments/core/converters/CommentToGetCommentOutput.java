@@ -13,8 +13,7 @@ public class CommentToGetCommentOutput extends BaseConverter<Comment, GetComment
     protected GetCommentOutput convertObject(Comment input) {
         GetCommentOutput output = GetCommentOutput.builder()
                 .id(input.getId().toString())
-                .firstName("firstName")//TODO: when the communication between services is establish change the values
-                .lastName("lastName")
+                .userId(input.getUserId().toString())
                 .content(input.getContent())
                 .lastEditedBy(input.getLastEditedBy().toString())
                 .lastEditedDate(LocalDate.from(input.getLastEditedDate()))
