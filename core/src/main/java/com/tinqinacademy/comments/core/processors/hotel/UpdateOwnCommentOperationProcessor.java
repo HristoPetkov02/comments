@@ -60,7 +60,7 @@ public class UpdateOwnCommentOperationProcessor extends BaseOperationProcessor<U
 
         checkIfUserIsOwner(input, currentComment);
         Comment updatedComment = currentComment.toBuilder()
-                .lastEditedBy(currentComment.getId())
+                .lastEditedBy(UUID.fromString(input.getUserId()))
                 .content(input.getContent())
                 .build();
 

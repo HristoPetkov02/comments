@@ -14,6 +14,7 @@ import org.hibernate.validator.constraints.UUID;
 @Builder(toBuilder = true)
 public class UpdateCommentInput implements OperationInput {
     @JsonIgnore
+    @UUID(message = "Comment id must be a valid UUID")
     private String commentId;
 
     @NotBlank(message = "Room id is required")

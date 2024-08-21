@@ -13,7 +13,7 @@ public class UpdateCommentInputToCommentBuilder extends BaseConverter<UpdateComm
     protected Comment.CommentBuilder convertObject(UpdateCommentInput input) {
         Comment.CommentBuilder output = Comment.builder()
                 .id(UUID.fromString(input.getCommentId()))
-                .roomId(UUID.randomUUID())
+                .roomId(UUID.fromString(input.getRoomId()))
                 .content(input.getContent());
         return output;
     }
