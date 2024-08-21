@@ -1,4 +1,4 @@
-package com.tinqinacademy.comments.api.operations.leavecomment;
+package com.tinqinacademy.comments.api.operations.hotel.leavecomment;
 
 import com.tinqinacademy.comments.api.base.OperationProcessor;
 

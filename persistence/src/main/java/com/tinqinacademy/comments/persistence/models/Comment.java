@@ -34,7 +34,7 @@ public class Comment {
     @Column(name = "room_id",nullable = false)
     private UUID roomId;
 
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Column(name = "user_id", nullable = false)
     private UUID userId;
 
     @Column(name = "last_edited_by", nullable = false)

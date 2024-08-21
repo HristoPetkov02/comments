@@ -1,4 +1,4 @@
-package com.tinqinacademy.comments.api.operations.updateowncomment;
+package com.tinqinacademy.comments.api.operations.hotel.updateowncomment;
 
 import com.tinqinacademy.comments.api.base.OperationProcessor;
 

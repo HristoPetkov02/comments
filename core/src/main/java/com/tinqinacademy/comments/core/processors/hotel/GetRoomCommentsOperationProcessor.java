@@ -1,12 +1,12 @@
-package com.tinqinacademy.comments.core.processors;
+package com.tinqinacademy.comments.core.processors.hotel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tinqinacademy.comments.api.interfaces.ErrorHandlerService;
 import com.tinqinacademy.comments.api.models.ErrorWrapper;
 import com.tinqinacademy.comments.api.models.output.GetCommentOutput;
-import com.tinqinacademy.comments.api.operations.getcomments.GetRoomCommentsInput;
-import com.tinqinacademy.comments.api.operations.getcomments.GetRoomCommentsOperation;
-import com.tinqinacademy.comments.api.operations.getcomments.GetRoomCommentsOutput;
+import com.tinqinacademy.comments.api.operations.hotel.getcomments.GetRoomCommentsInput;
+import com.tinqinacademy.comments.api.operations.hotel.getcomments.GetRoomCommentsOperation;
+import com.tinqinacademy.comments.api.operations.hotel.getcomments.GetRoomCommentsOutput;
 import com.tinqinacademy.comments.core.base.BaseOperationProcessor;
 import com.tinqinacademy.comments.core.exceptions.GeneralApiException;
 import com.tinqinacademy.comments.persistence.models.Comment;

@@ -1,4 +1,4 @@
-package com.tinqinacademy.comments.api.operations.deletecomment;
+package com.tinqinacademy.comments.api.operations.system.deletecomment;
 
 import com.tinqinacademy.comments.api.base.OperationOutput;
 import lombok.*;
@@ -9,6 +9,4 @@ import lombok.*;
 @ToString
 @Builder
 public class DeleteCommentOutput implements OperationOutput {
-    //изходни данни за изтриване на коментар
-
 }

@@ -1,11 +1,11 @@
-package com.tinqinacademy.comments.core.processors;
+package com.tinqinacademy.comments.core.processors.system;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tinqinacademy.comments.api.interfaces.ErrorHandlerService;
 import com.tinqinacademy.comments.api.models.ErrorWrapper;
-import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentInput;
-import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentOperation;
-import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentOutput;
+import com.tinqinacademy.comments.api.operations.system.deletecomment.DeleteCommentInput;
+import com.tinqinacademy.comments.api.operations.system.deletecomment.DeleteCommentOperation;
+import com.tinqinacademy.comments.api.operations.system.deletecomment.DeleteCommentOutput;
 import com.tinqinacademy.comments.core.base.BaseOperationProcessor;
 import com.tinqinacademy.comments.core.exceptions.GeneralApiException;
 import com.tinqinacademy.comments.persistence.repository.CommentRepository;

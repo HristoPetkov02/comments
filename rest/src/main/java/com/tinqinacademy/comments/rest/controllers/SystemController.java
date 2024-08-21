@@ -1,17 +1,13 @@
 package com.tinqinacademy.comments.rest.controllers;
 
-import com.tinqinacademy.comments.api.models.ErrorWrapper;
-import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentInput;
-import com.tinqinacademy.comments.api.operations.deletecomment.DeleteCommentOutput;
-import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentInput;
-import com.tinqinacademy.comments.api.operations.updatecomment.UpdateCommentOutput;
+import com.tinqinacademy.comments.api.operations.system.deletecomment.DeleteCommentInput;
+import com.tinqinacademy.comments.api.operations.system.deletecomment.DeleteCommentOperation;
+import com.tinqinacademy.comments.api.operations.system.updatecomment.UpdateCommentInput;
+import com.tinqinacademy.comments.api.operations.system.updatecomment.UpdateCommentOperation;
 import com.tinqinacademy.comments.api.restroute.RestApiRoutes;
-import com.tinqinacademy.comments.core.processors.DeleteCommentOperationProcessor;
-import com.tinqinacademy.comments.core.processors.UpdateCommentOperationProcessor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +17,8 @@ import com.tinqinacademy.comments.rest.base.BaseController;
 @RequiredArgsConstructor
 @RestController
 public class SystemController extends BaseController{
-    private final DeleteCommentOperationProcessor deleteCommentOperationProcessor;
-    private final UpdateCommentOperationProcessor updateCommentOperationProcessor;
+    private final DeleteCommentOperation deleteCommentOperation;
+    private final UpdateCommentOperation updateCommentOperation;
 
     @Operation(summary = "Update comment", description = " updates a comment")
     @ApiResponses(value = {
@@ -38,7 +34,7 @@ public class SystemController extends BaseController{
                 .commentId(commentId)
                 .build();
 
-        return handle(updateCommentOperationProcessor.process(updatedInput));
+        return handle(updateCommentOperation.process(updatedInput));
     }
 
 
@@ -54,6 +50,6 @@ public class SystemController extends BaseController{
                 .commentId(commentId)
                 .build();
 
-        return handle(deleteCommentOperationProcessor.process(input));
+        return handle(deleteCommentOperation.process(input));
     }
 }
