@@ -22,10 +22,10 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class UpdateOwnCommentProcessor extends BaseOperationProcessor<UpdateOwnCommentInput, UpdateOwnCommentOutput> implements UpdateOwnCommentOperation {
+public class UpdateOwnCommentOperationProcessor extends BaseOperationProcessor<UpdateOwnCommentInput, UpdateOwnCommentOutput> implements UpdateOwnCommentOperation {
     private final CommentRepository commentRepository;
 
-    public UpdateOwnCommentProcessor(ConversionService conversionService, ObjectMapper mapper, ErrorHandlerService errorHandlerService, Validator validator, CommentRepository commentRepository) {
+    public UpdateOwnCommentOperationProcessor(ConversionService conversionService, ObjectMapper mapper, ErrorHandlerService errorHandlerService, Validator validator, CommentRepository commentRepository) {
         super(conversionService, mapper, errorHandlerService, validator);
         this.commentRepository = commentRepository;
     }
@@ -45,12 +45,20 @@ public class UpdateOwnCommentProcessor extends BaseOperationProcessor<UpdateOwnC
         return currentComment;
     }
 
+    private void checkIfUserIsOwner(UpdateOwnCommentInput input, Comment currentComment){
+        if (!currentComment.getUserId().equals(UUID.fromString(input.getUserId()))) {
+            throw new GeneralApiException("You are not the owner of this comment", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     private UpdateOwnCommentOutput updateOwnComment(UpdateOwnCommentInput input) {
         logStart(input);
 
         validateInput(input);
 
         Comment currentComment = getCurrentComment(input);
+
+        checkIfUserIsOwner(input, currentComment);
         Comment updatedComment = currentComment.toBuilder()
                 .lastEditedBy(currentComment.getId())
                 .content(input.getContent())

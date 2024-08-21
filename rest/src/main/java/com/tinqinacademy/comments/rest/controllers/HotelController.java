@@ -1,12 +1,12 @@
 package com.tinqinacademy.comments.rest.controllers;
 
 import com.tinqinacademy.comments.api.operations.hotel.getcomments.GetRoomCommentsInput;
+import com.tinqinacademy.comments.api.operations.hotel.getcomments.GetRoomCommentsOperation;
 import com.tinqinacademy.comments.api.operations.hotel.leavecomment.LeaveCommentInput;
+import com.tinqinacademy.comments.api.operations.hotel.leavecomment.LeaveCommentOperation;
 import com.tinqinacademy.comments.api.operations.hotel.updateowncomment.UpdateOwnCommentInput;
+import com.tinqinacademy.comments.api.operations.hotel.updateowncomment.UpdateOwnCommentOperation;
 import com.tinqinacademy.comments.api.restroute.RestApiRoutes;
-import com.tinqinacademy.comments.core.processors.hotel.GetRoomCommentsOperationProcessor;
-import com.tinqinacademy.comments.core.processors.hotel.LeaveCommentOperationProcessor;
-import com.tinqinacademy.comments.core.processors.hotel.UpdateOwnCommentProcessor;
 import com.tinqinacademy.comments.rest.base.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 public class HotelController extends BaseController {
-    private final LeaveCommentOperationProcessor leaveCommentOperationProcessor;
-    private final GetRoomCommentsOperationProcessor getRoomCommentsOperationProcessor;
-    private final UpdateOwnCommentProcessor updateOwnCommentProcessor;
+    private final LeaveCommentOperation leaveCommentOperation;
+    private final GetRoomCommentsOperation getRoomCommentsOperation;
+    private final UpdateOwnCommentOperation updateOwnCommentOperation;
 
     @Operation(summary = "Get all comments", description = " gets all comments of a room")
     @ApiResponses(value = {
@@ -34,7 +34,7 @@ public class HotelController extends BaseController {
         GetRoomCommentsInput input = GetRoomCommentsInput.builder()
                 .roomId(roomId)
                 .build();
-        return handle(getRoomCommentsOperationProcessor.process(input));
+        return handle(getRoomCommentsOperation.process(input));
     }
 
     @Operation(summary = "Leave a comment", description = " leaves a comment for a room")
@@ -51,7 +51,7 @@ public class HotelController extends BaseController {
                 .roomId(roomId)
                 .build();
 
-        return handleWithCode(leaveCommentOperationProcessor.process(updatedInput), HttpStatus.CREATED);
+        return handleWithCode(leaveCommentOperation.process(updatedInput), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update own comment", description = " updates your own comment")
@@ -67,7 +67,7 @@ public class HotelController extends BaseController {
         UpdateOwnCommentInput updatedInput = input.toBuilder()
                 .commentId(commentId)
                 .build();
-        return handle(updateOwnCommentProcessor.process(updatedInput));
+        return handle(updateOwnCommentOperation.process(updatedInput));
     }
 
 }
