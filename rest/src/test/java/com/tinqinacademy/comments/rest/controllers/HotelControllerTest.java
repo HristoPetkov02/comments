@@ -1,6 +1,7 @@
 package com.tinqinacademy.comments.rest.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tinqinacademy.comments.api.operations.hotel.leavecomment.LeaveCommentInput;
 import com.tinqinacademy.comments.api.restroute.RestApiRoutes;
 import com.tinqinacademy.comments.persistence.models.Comment;
 import com.tinqinacademy.comments.persistence.repository.CommentRepository;
@@ -77,5 +78,39 @@ public class HotelControllerTest {
 
         mvc.perform(get(RestApiRoutes.API_HOTEL_GET_ROOM_COMMENT, uuid.toString()))
                 .andExpect(status().isNotFound());
+    }
+
+
+
+    @Test
+    public void testLeaveCommentCreated() throws Exception {
+        Comment comment = commentRepository.findAll().getFirst();
+        UUID uuid = UUID.randomUUID();
+        while (uuid.equals(comment.getRoomId())) {
+            uuid = UUID.randomUUID();
+        }
+        LeaveCommentInput input = LeaveCommentInput.builder()
+                .userId(UUID.randomUUID().toString())
+                .content("This is a comment")
+                .build();
+
+
+        mvc.perform(post(RestApiRoutes.API_HOTEL_LEAVE_COMMENT, uuid.toString())
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(input)))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void testLeaveCommentBadRequest() throws Exception {
+        LeaveCommentInput input = LeaveCommentInput.builder()
+                .userId("not-a-uuid")
+                .content("This is a comment")
+                .build();
+
+        mvc.perform(post(RestApiRoutes.API_HOTEL_LEAVE_COMMENT, "not-a-uuid")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(input)))
+                .andExpect(status().isBadRequest());
     }
 }
