@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -96,6 +97,32 @@ public class SystemControllerTest {
         mvc.perform(put(RestApiRoutes.API_SYSTEM_UPDATE_COMMENT, uuid.toString())
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(input)))
+                .andExpect(status().isNotFound());
+    }
+
+
+
+    @Test
+    public void testDeleteCommentOk() throws Exception{
+        Comment comment = commentRepository.findAll().getFirst();
+        mvc.perform(delete(RestApiRoutes.API_SYSTEM_DELETE_COMMENT, comment.getId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteCommentBadRequest() throws Exception{
+        mvc.perform(delete(RestApiRoutes.API_SYSTEM_DELETE_COMMENT, "not-a-uuid"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testDeleteCommentNotFound() throws Exception{
+        Comment comment = commentRepository.findAll().getFirst();
+        UUID uuid = UUID.randomUUID();
+        while (uuid.equals(comment.getId())) {
+            uuid = UUID.randomUUID();
+        }
+        mvc.perform(delete(RestApiRoutes.API_SYSTEM_DELETE_COMMENT, uuid.toString()))
                 .andExpect(status().isNotFound());
     }
 }
