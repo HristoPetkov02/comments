@@ -113,4 +113,63 @@ public class HotelControllerTest {
                         .content(objectMapper.writeValueAsString(input)))
                 .andExpect(status().isBadRequest());
     }
+
+
+
+    @Test
+    public void testUpdateOwnCommentOk() throws Exception {
+        Comment comment = commentRepository.findAll().getFirst();
+        LeaveCommentInput input = LeaveCommentInput.builder()
+                .userId(comment.getUserId().toString())
+                .content("This is a comment")
+                .build();
+
+        mvc.perform(patch(RestApiRoutes.API_HOTEL_UPDATE_OWN_COMMENT, comment.getId())
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(input)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testUpdateOwnCommentBadRequest() throws Exception {
+        LeaveCommentInput input = LeaveCommentInput.builder()
+                .userId("not-a-uuid")
+                .content("This is a comment")
+                .build();
+
+        mvc.perform(patch(RestApiRoutes.API_HOTEL_UPDATE_OWN_COMMENT, "not-a-uuid")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(input)))
+                .andExpect(status().isBadRequest());
+
+        Comment comment = commentRepository.findAll().getFirst();
+        input = LeaveCommentInput.builder()
+                .userId(UUID.randomUUID().toString())
+                .content("This is a comment")
+                .build();
+
+        mvc.perform(patch(RestApiRoutes.API_HOTEL_UPDATE_OWN_COMMENT, comment.getId())
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(input)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdateOwnCommentNotFound() throws Exception {
+        Comment comment = commentRepository.findAll().getFirst();
+        UUID uuid = UUID.randomUUID();
+        while (uuid.equals(comment.getId())) {
+            uuid = UUID.randomUUID();
+        }
+
+        LeaveCommentInput input = LeaveCommentInput.builder()
+                .userId(comment.getUserId().toString())
+                .content("This is a comment")
+                .build();
+
+        mvc.perform(patch(RestApiRoutes.API_HOTEL_UPDATE_OWN_COMMENT, uuid.toString())
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(input)))
+                .andExpect(status().isNotFound());
+    }
 }
