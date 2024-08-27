@@ -27,7 +27,7 @@ public class HotelController extends BaseController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully displayed all comments"),
             @ApiResponse(responseCode = "400", description = "Wrong roomId format used"),
-            @ApiResponse(responseCode = "404", description = "A room with this roomId doesn't exist")
+            @ApiResponse(responseCode = "404", description = "The room doesn't have comments")
     })
     @GetMapping(RestApiRoutes.API_HOTEL_GET_ROOM_COMMENT)
     public ResponseEntity<?> getRoomComments(@PathVariable String roomId) {
@@ -40,8 +40,7 @@ public class HotelController extends BaseController {
     @Operation(summary = "Leave a comment", description = " leaves a comment for a room")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully created a comment"),
-            @ApiResponse(responseCode = "400", description = "Wrong roomId format used"),
-            @ApiResponse(responseCode = "404", description = "A room with this roomId doesn't exist")
+            @ApiResponse(responseCode = "400", description = "Wrong roomId format used")
     })
     @PostMapping(RestApiRoutes.API_HOTEL_LEAVE_COMMENT)
     public ResponseEntity<?> leaveComment(
