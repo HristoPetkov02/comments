@@ -42,10 +42,12 @@ public class GetRoomCommentsOperationProcessor extends BaseOperationProcessor<Ge
     }
 
     private List<Comment> getComments(String id) {
-        List<Comment> comments = commentRepository.findCommentsByRoomId(UUID.fromString(id))
-                .orElseThrow(() -> new GeneralApiException(
-                        String.format("Room with id %s not found", id),
-                        HttpStatus.NOT_FOUND));
+        List<Comment> comments = commentRepository.findCommentsByRoomId(UUID.fromString(id));
+        if (comments.isEmpty()) {
+            throw new GeneralApiException(
+                    String.format("Room with id %s has no comments", id),
+                    HttpStatus.NOT_FOUND);
+        }
         return comments;
     }
 
